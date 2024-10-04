@@ -4,10 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
-# Customizing Streamlit theme
 st.set_page_config(page_title="Bike Sharing Data", page_icon="🚴", layout="wide")
 
-# Adding custom CSS for styling
 st.markdown("""
     <style>
         .main-title {
@@ -26,14 +24,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Title of the Dashboard
 st.markdown('<div class="main-title">Bike Sharing Data Analysis 🚴</div>', unsafe_allow_html=True)
 
-# Load data
 day_df = pd.read_csv('data/day.csv')
 hour_df = pd.read_csv('data/hour.csv')
 
-# Data preparation (same as before)
 new_columns = {'dteday': 'date', 'yr': 'year', 'mnth': 'month', 'weathersit': 'weather', 'hum': 'humidity', 'cnt': 'count'}
 day_df.rename(columns=new_columns, inplace=True)
 new_columns['hr'] = 'hour'
@@ -46,21 +41,10 @@ WEATHERS = {1: 'Clear', 2: 'Cloudy/Mist', 3: 'Light Rain/Snow', 4: 'Heavy Rain/S
 day_df['season'] = day_df['season'].map(SEASONS)
 day_df['weather'] = day_df['weather'].map(WEATHERS)
 
-# Sidebar for navigation
 st.sidebar.title("Navigation 📊")
 section = st.sidebar.selectbox("Go to:", ['Cuaca dan Musim', 'Hari Kerja & Hari Libur', 'Kecepatan Angin & Kelembapan', 'Tren Penyewaan', 'RFM Analysis'])
 
-# Columns layout for a cleaner look
 st.markdown("<hr>", unsafe_allow_html=True)
-cols = st.columns([1, 3])
-# with cols[0]:
-#     st.write("## Key Insights")
-#     st.metric("Total Rentals", day_df['count'].sum())
-#     st.metric("Average Rentals", day_df['count'].mean())
-
-import streamlit as st
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 if section == 'Cuaca dan Musim':
     st.header("Bagaimana Cuaca dan Musim Memengaruhi Jumlah Sepeda yang Disewa?")
@@ -155,13 +139,11 @@ if section == 'Hari Kerja & Hari Libur':
 if section == 'Kecepatan Angin & Kelembapan':
     st.header("Apakah ada pengaruh signifikan dari kecepatan angin atau kelembapan terhadap penyewaan sepeda?")
     
-    # MinMaxScaler
     scaler = MinMaxScaler()
     windspeed_hum_normalized = scaler.fit_transform(day_df[['windspeed', 'count', 'humidity']])
 
     windspeed_hum_normalized_df = pd.concat([day_df['date'], pd.DataFrame(windspeed_hum_normalized, columns=['windspeed', 'count', 'humidity'])], axis=1)
     
-    # Plot windspeed vs count
     fig, ax = plt.subplots(figsize=(20, 10))
 
     monthly_df = windspeed_hum_normalized_df.resample(on='date', rule='ME').sum().reset_index()
@@ -234,21 +216,16 @@ if section == 'Tren Penyewaan':
     st.write(f"Rata-rata penyewaan sepeda pada tahun 2011: {mean_count_2011}")
     st.write(f"Rata-rata penyewaan sepeda pada tahun 2012: {mean_count_2012}")
 
-    # Visualize trend over time
     month_count_df = day_df.resample(on='date', rule='ME').sum().reset_index()
 
-    # Creating figure and axis
     fig, ax = plt.subplots(figsize=(14, 6))
 
-    # Creating a line plot
     sns.lineplot(data=month_count_df, x='date', y='count', color='red', ax=ax)
 
-    # Setting title and labels
     ax.set_title('Jumlah Pengguna dari tahun ke tahun', fontsize=16)
     ax.set_xlabel('Tanggal', fontsize=12)
     ax.set_ylabel('Jumlah Pengguna', fontsize=12)
 
-    # Rotating x-axis labels
     ax.tick_params(axis='x', rotation=45)
 
     st.pyplot(fig)
@@ -373,6 +350,5 @@ if section == 'RFM Analysis':
     st.markdown(f"Jumlah pengguna sepeda `total`: `{pengguna_2011 + pengguna_2012}`")
 
 
-# Footnotes
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("#### Dashboard created with 💡 by github.com/lutfihidayanto", unsafe_allow_html=True)
