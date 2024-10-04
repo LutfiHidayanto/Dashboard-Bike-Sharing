@@ -361,7 +361,7 @@ if section == 'RFM Analysis':
     ax2[1].legend()
 
     st.pyplot(fig2)
-    st.caption('Jumlah frekuensi penyewaan sepeda didominasi oleh registered customer.')
+    st.caption('Monetary analysis dilakukan dengan menghitung jumlah pengguna tiap bulannya untuk menghitung pendapatan tiap bulannya.')
 
 
     pengguna_2011 = year_df['count'][0]
