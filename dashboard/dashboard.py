@@ -15,6 +15,7 @@ st.markdown("""
             font-size: 40px;
             color: #4A90E2;
             text-align: center;
+            margin-top: 100px;
         }
         .sidebar .sidebar-content {
             background-color: #f5f5f5;
